@@ -1,31 +1,36 @@
 import { Component } from "../../../../js/semi-reactive/core.js";
 
+import AccountService from "../../../services/AccountService.js";
+
 export default class Home extends Component
 {
 	constructor(auth) {
 		super({
-			username: "Usuário"
+			owner: '',
+			balance: '0'
 		});
-		this.auth = auth;
+		this.service = new AccountService(auth);
 	}
 
-	onFirst() {
-		this.loadUsername();
-	}
+	async onFirst() {
+		const json = await this.service.getAccount();
 
-	async loadUsername() {
-		const user = await this.auth.getUserData();
-		this.username = user.name;
+		this.owner = json.owner_name;
+		this.balance = json.balance;
 	}
 
 	render() {
 		return `
 			<div class="container-fluid p-5 h-100">
 				<div class="row">
-					<div class="col-md-7">
-						<div class="h1">
-							<span class="fa fa-home"></span>
-							Página inicial
+					<div class="col">
+						<div class="h4">
+							${ this.owner }
+						</div>
+						<hr>
+
+						<div class="h5">
+							Saldo: G$ ${ this.balance.replace('.', ',') }
 						</div>
 					</div>
 				</div>

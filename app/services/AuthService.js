@@ -142,6 +142,7 @@ export default class AuthService
 		if (response.ok) {
 			this.token = json.token;
 			this.__id = json.id;
+			setTimeout(() => this.logout(), json.expires * 1000);
 			return {
 				success: true,
 				status: response.status

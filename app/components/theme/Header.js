@@ -18,12 +18,6 @@ export default class Header extends Component
 	onFirst(item) {
 		const onToggle = this.getFunctionAttribute("ontoggle", item, "event");
 		this.onToggle.then(onToggle);
-		this.loadUsername();
-	}
-
-	async loadUsername() {
-		const user = await this.auth.getUserData();
-		this.username = user.name;
 	}
 
 	toggleSidebar() {

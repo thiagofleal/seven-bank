@@ -34,6 +34,8 @@ export default class Controller extends Switch
 			app.onSelect.emit();
 			return this.select("app");
 		}
+		const login = this.getComponent("login");
+		login.onSelect.emit();
 		this.select("login");
 	}
 }

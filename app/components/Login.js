@@ -13,6 +13,11 @@ export default class Login extends FormComponent
 		this.account = '';
 		this.password = '';
 		this.onLogin = new EventEmitter('login', this);
+		this.onSelect = new EventEmitter('select', this);
+
+		this.onSelect.then(() => {
+			this.loading = false;
+		});
 
 		this.setFieldsControls({
 			account: {

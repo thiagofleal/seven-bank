@@ -11,7 +11,7 @@ export default class SideBar extends Component
 			account: ''
 		});
 
-		this.active = true;
+		this.active = window.innerWidth > 425;
 		this.service = new AccountService(auth);
 	}
 
@@ -114,8 +114,8 @@ export default class SideBar extends Component
 
 		return `
 			<nav id="sidebar" class="${ this.active ? "active" : '' } bg-custom">
-				<div class="sidebar-header text-light" style="height: calc(50vh - 125px)">
-					<div class="jumbotron bg-custom">
+				<div class="sidebar-header text-light" style="height: calc(40vh - 125px)">
+					<div class="p-3">
 						<div>
 							Titular: ${ this.owner }
 						</div>
@@ -129,7 +129,7 @@ export default class SideBar extends Component
 				</div>
 				<hr class="bg-light">
 
-				<ul class="list-unstyled components" style="height: 45vh; overflow: auto;">
+				<ul class="list-unstyled components" style="height: 55vh; overflow: auto;">
 					${
 						menu.map(
 							item => this.renderMenu(item)
