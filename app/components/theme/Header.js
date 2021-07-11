@@ -37,7 +37,7 @@ export default class Header extends Component
 		return `
 			<nav class="navbar navbar-light bg-light fixed-top shadow-bottom">
 				<div class="container-fluid">
-					<a class="navbar-brand" href="#/">
+					<a class="navbar-brand">
 						<button class="btn" onClick="this.component.toggleSidebar()">
 							<span class="navbar-toggler-icon"></span>
 						</button>

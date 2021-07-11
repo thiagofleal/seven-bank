@@ -10,14 +10,7 @@ export default class AuthService
 	reset()
 	{
 		this.token = null;
-	}
-
-	saveCredentials()
-	{
-	}
-
-	getSavedCredentials()
-	{
+		this.permissions = [];
 	}
 
 	logout()
@@ -142,6 +135,7 @@ export default class AuthService
 		if (response.ok) {
 			this.token = json.token;
 			this.__id = json.id;
+			this.permissions = json.permissions;
 			setTimeout(() => this.logout(), json.expires * 1000);
 			return {
 				success: true,
@@ -198,16 +192,7 @@ export default class AuthService
 		return false;
 	}
 
-	async getUserData()
-	{
-		const json = await this.get(
-			`${ this.getUrl('users') }/${ this.getId() }`
-		);
-
-		if (Array.isArray(json)) {
-			return json[0];
-		}
-
-		return json;
+	hasPermission(permission) {
+		return this.permissions.indexOf(permission) !== -1;
 	}
 }

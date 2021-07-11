@@ -32,7 +32,7 @@ class ModalContent extends Component
 				<div class="container">
 					<div class="row">
 						<div class="col">
-							Deseja realmente sair?
+							Deseja realmente sair da sua conta?
 						</div>
 					</div>
 				</div>

@@ -1,4 +1,4 @@
-import { Component } from "../../../js/semi-reactive/core.js";
+import { Component, EventEmitter } from "../../../js/semi-reactive/core.js";
 
 import AccountService from "../../services/AccountService.js";
 
@@ -8,17 +8,23 @@ export default class SideBar extends Component
 		super({
 			owner: '',
 			agency: '',
-			account: ''
+			account: '',
+			menu: []
 		});
 
-		this.active = window.innerWidth > 425;
+		this.isMobile = window.innerWidth <= 425;
+		this.active = !this.isMobile;
+		this.onSelect = new EventEmitter('select', this);
+		this.auth = auth;
 		this.service = new AccountService(auth);
 	}
 
-	async onFirst() {
+	async onFirst(item) {
+		const onSelect = this.getFunctionAttribute("onselect", item, "event");
 		const json = await this.service.getAccount();
-
-		this.owner = json.owner_name;
+		
+		this.onSelect.then(onSelect);
+		this.owner = json.owner;
 		this.agency = json.agency;
 		this.account = json.code;
 	}
@@ -29,7 +35,28 @@ export default class SideBar extends Component
 		this.active = !this.active;
 	}
 
-	renderMenu(menu) {
+	open() {
+		if (!this.active) {
+			this.toggle();
+		}
+	}
+
+	close() {
+		if (this.active) {
+			this.toggle();
+		}
+	}
+
+	select(index) {
+		if (this.isMobile) {
+			this.close();
+		}
+		this.onSelect.emit(this.menu[index]);
+	}
+
+	renderMenu(menu, index) {
+		menu = Object.assign({}, menu);
+
 		const icon = menu.icon || "";
 		const title = menu.title || "";
 		let attributes = [];
@@ -58,7 +85,7 @@ export default class SideBar extends Component
 				attributes.map(
 					attr => `${ attr.name }="${ attr.value }"`
 				).join(' ')
-			}>
+			} onclick="this.component.select(${ index })">
 				<span class="${ icon }"></span>
 				${ title }
 			</a>
@@ -94,7 +121,7 @@ export default class SideBar extends Component
 					>
 						${
 							childs.map(
-								item => this.renderMenu(item)
+								(item, index) => this.renderMenu(item, index)
 							).join('')
 						}
 					</ul>
@@ -105,13 +132,7 @@ export default class SideBar extends Component
 		}
 	}
 
-	getMenu() {
-		return [];
-	}
-
 	render() {
-		const menu = this.getMenu();
-
 		return `
 			<nav id="sidebar" class="${ this.active ? "active" : '' } bg-custom">
 				<div class="sidebar-header text-light" style="height: calc(40vh - 125px)">
@@ -129,10 +150,10 @@ export default class SideBar extends Component
 				</div>
 				<hr class="bg-light">
 
-				<ul class="list-unstyled components" style="height: 55vh; overflow: auto;">
+				<ul class="list-unstyled components text-light" style="height: 55vh; overflow: auto;">
 					${
-						menu.map(
-							item => this.renderMenu(item)
+						this.menu.map(
+							(item, index) => this.renderMenu(item, index)
 						).join('')
 					}
 				</ul>
