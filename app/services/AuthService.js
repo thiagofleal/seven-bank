@@ -26,6 +26,7 @@ export default class AuthService
 		}
 
 		args.method = method;
+		args.mode = "cors";
 
 		if (body) {
 			args.body = JSON.stringify(body);
@@ -35,8 +36,8 @@ export default class AuthService
 			args.headers = {};
 		}
 
-		if (!("Authorization" in args.headers)) {
-			args.headers["Authorization"] = `Bearer ${ this.token }`;
+		if (!("authorization" in args.headers)) {
+			args.headers["authorization"] = `Bearer ${ this.token }`;
 		}
 
 		if (!("Content-Type" in args.headers)) {
@@ -118,7 +119,9 @@ export default class AuthService
 		const base = `${ baseUrl }`;
 		const urls = {
 			"login": `${ base }/login`,
-			"accounts": `${ base }/contas`
+			"accounts": `${ base }/contas`,
+			"search": `${ base }/contas/buscar`,
+			"pix": `${ base }/pix`
 		};
 
 		if (key in urls) {
@@ -156,6 +159,7 @@ export default class AuthService
 			this.getUrl("login"),
 			{
 				method: "POST",
+				mode: "cors",
 				headers: {
 					"Content-Type": "application/json"
 				},
