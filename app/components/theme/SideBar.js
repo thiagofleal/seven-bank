@@ -136,7 +136,7 @@ export default class SideBar extends Component
 		return `
 			<nav id="sidebar" class="${ this.active ? "active" : '' } bg-custom">
 				<div class="sidebar-header text-light" style="height: calc(40vh - 125px)">
-					<div class="p-3">
+					<div class="p-2">
 						<div>
 							Titular: ${ this.owner }
 						</div>
