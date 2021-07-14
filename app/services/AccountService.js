@@ -17,7 +17,6 @@ export default class AccountService
 
 	async transfer(account, value) {
 		value = +value.replace(',', '.');
-		console.log({account, value});
 		return await this.auth.post(this.auth.getUrl("pix"), {
 			account, value
 		});
