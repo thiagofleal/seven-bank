@@ -44,7 +44,7 @@ export default class AppComponent extends Component
 	onFirst() {
 		const items = [];
 
-		if (this.auth.hasPermission('VIEW')) {
+		if (this.auth.hasPermission('ACC')) {
 			items.push({
 				id: 'menu-account',
 				icon: "fa fa-user",
@@ -52,20 +52,20 @@ export default class AppComponent extends Component
 				href: "#"
 			});
 		}
-		if (this.auth.hasPermission('TRANSFER')) {
+		if (this.auth.hasPermission('TRANSF')) {
 			items.push({
 				id: 'menu-transfer',
-				icon: "fa fa-dollar",
+				icon: "fa fa-usd",
 				title: "Transferir",
 				href: "#/transferir"
 			});
 		}
-		if (this.auth.hasPermission('CREATE')) {
+		if (this.auth.hasPermission('ADM_ACC')) {
 			items.push({
-				id: 'menu-manage',
-				icon: "fa fa-plus",
-				title: "Gerenciar contas",
-				href: "#/transferir"
+				id: 'menu-manage-accounts',
+				icon: "fa fa-address-card-o",
+				title: "Contas",
+				href: "#/contas"
 			});
 		}
 		items.push({
