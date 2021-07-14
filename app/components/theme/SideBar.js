@@ -153,7 +153,11 @@ export default class SideBar extends Component
 				<ul class="list-unstyled components text-light" style="height: 55vh; overflow: auto;">
 					${
 						this.menu.map(
-							(item, index) => this.renderMenu(item, index)
+							(item, index) => `
+								<div class="px-1">
+									${ this.renderMenu(item, index) }
+								</div>
+							`
 						).join('')
 					}
 				</ul>

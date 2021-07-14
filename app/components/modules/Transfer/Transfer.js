@@ -11,7 +11,7 @@ export default class Transfer extends FormComponent
 
 		this.code = '';
 		this.account = {};
-		this.value = '';
+		this.value = '0,00';
 		this.service = new AccountService(auth);
 
 		this.setFieldsControls({
@@ -106,7 +106,7 @@ export default class Transfer extends FormComponent
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<label class="input-group-text" for="transfer-value">
-								Valor (G$)
+								Valor
 							</label>
 						</div>
 						${
