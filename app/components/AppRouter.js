@@ -3,6 +3,7 @@ import { SimpleRouter } from "../../js/semi-reactive/core.js";
 import NotFoundComponent from "./modules/Default/NotFoundComponent.js";
 import Home from "./modules/Home/Home.js";
 import Transfer from "./modules/Transfer/Transfer.js";
+import Accounts from "./modules/Accounts/Accounts.js";
 
 export default class AppRouter extends SimpleRouter
 {
@@ -13,6 +14,7 @@ export default class AppRouter extends SimpleRouter
 			{ path: "", component: new Home(auth) },
 			{ path: "home", component: new Home(auth) },
 			{ path: "transferir", component: new Transfer(auth) },
+			{ path: "contas", component: new Accounts() },
 			{ path: "*", component: new NotFoundComponent() }
 		]);
 	}
