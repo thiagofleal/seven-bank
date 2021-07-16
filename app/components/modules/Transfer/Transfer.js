@@ -1,6 +1,32 @@
+import { Component, EventEmitter } from "../../../../js/semi-reactive/core.js";
 import { FormComponent } from "../../../../js/semi-reactive/utils.js";
 
 import AccountService from "../../../services/AccountService.js";
+
+class EnableButton extends Component
+{
+	constructor() {
+		super({
+			enabled: true,
+			text: '',
+			class: ''
+		});
+	}
+
+	onFirst(item) {
+		const onClick = new EventEmitter('click', item);
+		const callback = this.getFunctionAttribute('onclick', item, 'event');
+		onClick.then(event => callback(event));
+	}
+
+	render() {
+		return `
+			<button class="${ this.class }" ${ this.enabled ? '' : 'disabled="disabled"' }>
+				${ this.text }
+			</button>
+		`;
+	}
+}
 
 export default class Transfer extends FormComponent
 {
@@ -13,6 +39,13 @@ export default class Transfer extends FormComponent
 		this.account = {};
 		this.value = '';
 		this.service = new AccountService(auth);
+
+		this.button = new EnableButton();
+		this.button.class = "btn btn-secondary btn-block";
+		this.button.text = "Transferir";
+
+		this.checkButtonEnable();
+		this.appendChild(this.button, 'btn-custom');
 
 		this.setFieldsControls({
 			account: {
@@ -30,6 +63,7 @@ export default class Transfer extends FormComponent
 						this.account = await this.service.search(this.code);
 						this.searching = false;
 					}
+					this.checkButtonEnable();
 				}
 			},
 			value: {
@@ -52,13 +86,14 @@ export default class Transfer extends FormComponent
 					}
 					value = value.substr(0, value.length - 2) + ',' + value.substr(value.length - 2, 2);
 					this.value = value;
+					this.checkButtonEnable();
 				}
 			}
 		});
 	}
 
-	btnEnabled() {
-		return this.account.id !== undefined;
+	checkButtonEnable() {
+		this.button.enabled = this.account.id !== undefined && parseFloat(this.value.replace(',', '.'));
 	}
 
 	async transfer() {
@@ -73,7 +108,7 @@ export default class Transfer extends FormComponent
 
 	render() {
 		return `
-			<div class="p-5 h-100 text-center">
+			<div class="p-5 h-100">
 				<h4>Transferir</h4>
 				<hr>
 				<div class="input-group mb-3">
@@ -106,7 +141,7 @@ export default class Transfer extends FormComponent
 					<div class="input-group mb-3">
 						<div class="input-group-prepend">
 							<label class="input-group-text" for="transfer-value">
-								Valor (G$)
+								Valor
 							</label>
 						</div>
 						${
@@ -119,9 +154,7 @@ export default class Transfer extends FormComponent
 						}
 					</div>
 
-					<button class="btn btn-secondary btn-block" ${ this.btnEnabled() ? '' : 'disabled="disabled"' } onclick="this.component.transfer()">
-						Transferir
-					</button>
+					<btn-custom onclick="this.component.transfer()"></btn-custom>
 				</div>
 			</div>
 		`;
