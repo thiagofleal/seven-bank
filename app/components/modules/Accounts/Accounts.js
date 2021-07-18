@@ -1,5 +1,6 @@
 import { Component } from "../../../../js/semi-reactive/core.js";
 import { TableComponent } from "../../../../js/semi-reactive/utils.js";
+import { adjustDataTables } from "../../../../app/functions.js";
 
 import AccountModal from "./AccountModal.js";
 import AccountService from "../../../services/AccountService.js";
@@ -91,23 +92,28 @@ export default class Accounts extends Component
 		this.loadData();
 	}
 
-	loadData() {
-		this.table.loadData();
+	async loadData() {
+		await this.table.loadData();
+		adjustDataTables();
 	}
 
-	openAccount(row) {
-		this.modal.setTitle(row.code);
+	openAccount(data) {
+		this.modal.setTitle(data.code);
+		this.modal.setAccount(data);
+		this.modal.viewMode();
 		this.modal.open();
 	}
 
 	newAccount() {
 		this.modal.setTitle("Nova conta");
+		this.modal.setAccount({});
+		this.modal.createMode();
 		this.modal.open();
 	}
 
 	render() {
 		return `
-			<div class="container-fluid p-5 h-100">
+			<div class="container-fluid p-3 w-100 h-100">
 				<div class="row">
 					<div class="col">
 						<h5>Gerenciar contas</h5>
@@ -128,7 +134,7 @@ export default class Accounts extends Component
 				</div>
 			</div>
 
-			<modal-accounts></modal-accounts>
+			<modal-accounts data-classes="modal-dialog-centered"></modal-accounts>
 		`;
 	}
 }
