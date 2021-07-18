@@ -2,7 +2,7 @@ import { ModalComponent, FormComponent } from "../../../../js/semi-reactive/util
 
 class ModalContent extends FormComponent
 {
-	constructor(parent) {
+	constructor(parent, service) {
 		super({
 			title: '',
 			editing: false,
@@ -10,6 +10,7 @@ class ModalContent extends FormComponent
 		});
 
 		this.parent = parent;
+		this.service = service;
 
 		this.id = '';
 		this.code = '';
@@ -50,7 +51,8 @@ class ModalContent extends FormComponent
 			setAccount: data => this.setAccount(data),
 			editMode: () => this.editMode(),
 			createMode: () => this.createMode(),
-			viewMode: () => this.viewMode()
+			viewMode: () => this.viewMode(),
+			onClose: () => this.onClose()
 		});
 	}
 
@@ -84,11 +86,49 @@ class ModalContent extends FormComponent
 		this.parent.open();
 	}
 
+	onClose() {
+		this.password = this.confirm = '';
+	}
+
 	close() {
 		this.parent.close();
 	}
 
-	save() {
+	async save() {
+		if (this.password != this.confirm) {
+			alert("A senha e a confirmação não conferem");
+		} else {
+			if (this.creating) {
+				const ret = await this.service.createAccount(this.owner, this.password);
+				
+				if (ret.error) {
+					alert(ret.error);
+				} else {
+					const insert = await this.service.getAccount(ret.id);
+
+					if (insert.error) {
+						alert(insert.error);
+					} else {
+						this.setAccount(insert);
+					}
+				}
+			}
+			if (this.editing) {
+				const ret = await this.service.editAccount(this.id, this.owner, this.password);
+
+				if (ret.error) {
+					alert(ret.error);
+				} else {
+					const edited = await this.service.getAccount(this.id);
+
+					if (edited.error) {
+						alert(edited.error);
+					} else {
+						this.setAccount(edited);
+					}
+				}
+			}
+		}
 		this.viewMode();
 	}
 
@@ -234,7 +274,7 @@ class ModalContent extends FormComponent
 
 export default class AccountModal extends ModalComponent
 {
-	constructor() {
-		super(ModalContent);
+	constructor(service) {
+		super(ModalContent, service);
 	}
 }

@@ -36,4 +36,12 @@ export default class AccountService
 			return [];
 		}
 	}
+
+	async createAccount(owner, password) {
+		return await this.request.post(this.auth.getUrl('account'), { owner, password });
+	}
+
+	async editAccount(id, owner, password) {
+		return await this.request.post(`${ this.auth.getUrl('accounts') }/${ id }`, { owner, password });
+	}
 }

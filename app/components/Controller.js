@@ -5,6 +5,7 @@ import Login from "./Login.js";
 import Loading from "./Loading.js";
 
 import AuthService from "./../services/AuthService.js";
+import RequestService from "./../services/RequestService.js";
 
 export default class Controller extends Switch
 {

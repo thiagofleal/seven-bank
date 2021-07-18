@@ -82,7 +82,7 @@ export default class Accounts extends Component
 
 		this.service = new AccountService(auth);
 		this.table = new Table(this, this.service);
-		this.modal = new AccountModal();
+		this.modal = new AccountModal(this.service);
 
 		this.appendChild(this.table, "table-accounts");
 		this.appendChild(this.modal, "modal-accounts");

@@ -1,6 +1,6 @@
 export default class AuthService
 {
-	constructor(request, callback)
+	constructor(callback)
 	{
 		this.__id = 0;
 		this.reset();
@@ -24,7 +24,9 @@ export default class AuthService
 		const base = `${ baseUrl }`;
 		const urls = {
 			"login": `${ base }/login`,
+			"agency": `${ base }/agencia`,
 			"agencies": `${ base }/agencias`,
+			"account": `${ base }/conta`,
 			"accounts": `${ base }/contas`,
 			"search": `${ base }/contas/buscar`,
 			"pix": `${ base }/pix`
