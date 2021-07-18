@@ -72,14 +72,12 @@ export default class SideBar extends Component
 			delete menu.childs;
 			delete menu.ul;
 		}
-		
 		for (let key in menu) {
 			attributes.push({
 				name: key,
 				value: menu[key]
 			});
 		}
-
 		const link = `
 			<a ${
 				attributes.map(

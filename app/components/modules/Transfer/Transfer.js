@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from "../../../../js/semi-reactive/core.js";
+import { Component, EventEmitter, TextComponent } from "../../../../js/semi-reactive/core.js";
 import { FormComponent } from "../../../../js/semi-reactive/utils.js";
 
 import AccountService from "../../../services/AccountService.js";
@@ -43,9 +43,12 @@ export default class Transfer extends FormComponent
 		this.button = new EnableButton();
 		this.button.class = "btn btn-secondary btn-block";
 		this.button.text = "Transferir";
+		this.accountInfo = new TextComponent('');
 
 		this.checkButtonEnable();
+
 		this.appendChild(this.button, 'btn-custom');
+		this.appendChild(this.accountInfo, 'account-info');
 
 		this.setFieldsControls({
 			account: {
@@ -57,11 +60,26 @@ export default class Transfer extends FormComponent
 						account = account.substr(0, 6) + '-' + account.substr(6, 1);
 					}
 					this.code = account;
+					this.accountInfo.setText("");
 
 					if (account.length == 8) {
+						this.showInfo = true;
 						this.searching = true;
 						this.account = await this.service.search(this.code);
+
+						if (this.account.owner) {
+							this.accountInfo.setText(`
+								<h6>Nome: ${ this.account.owner }</h6>
+								<h6>Agência: ${ this.account.agency }</h6>
+								<h6>Conta: ${ this.account.account }</h6>
+							`);
+						} else {
+							this.accountInfo.setText(`Conta não encontrada`);
+						}
 						this.searching = false;
+					} else {
+						this.account = {};
+						this.accountInfo.setText('');
 					}
 					this.checkButtonEnable();
 				}
@@ -132,10 +150,8 @@ export default class Transfer extends FormComponent
 				</div>
 
 				<div class="${ this.searching ? 'd-none' : 'd-block' }">
-					<div class="${ this.account.owner ? 'd-block' : 'd-none' }">
-						<h6>Nome: ${ this.account.owner }</h6>
-						<h6>Agência: ${ this.account.agency }</h6>
-						<h6>Conta: ${ this.account.account }</h6>
+					<div class="mb-2">
+						<account-info class="mb-1"></account-info>
 					</div>
 
 					<div class="input-group mb-3">

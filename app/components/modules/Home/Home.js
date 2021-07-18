@@ -14,7 +14,7 @@ export default class Home extends Component
 		this.service = new AccountService(auth);
 	}
 
-	async onFirst() {
+	async onInit() {
 		const json = await this.service.getAccount();
 
 		this.owner = json.owner;

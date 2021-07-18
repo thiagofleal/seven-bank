@@ -18,4 +18,12 @@ export default class AppRouter extends SimpleRouter
 			{ path: "*", component: new NotFoundComponent() }
 		]);
 	}
+
+	initApp() {
+		this.getAllComponents().forEach(c => {
+			if (c.onInit) {
+				c.onInit();
+			}
+		});
+	}
 }

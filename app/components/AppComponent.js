@@ -1,4 +1,5 @@
-import { Component, Switch, EventEmitter } from "../../js/semi-reactive/core.js";
+import { Component, EventEmitter } from "../../js/semi-reactive/core.js";
+import { adjustDataTables } from '../functions.js';
 
 import Header from "./theme/Header.js";
 import SideBar from "./theme/SideBar.js";
@@ -16,7 +17,6 @@ export default class AppComponent extends Component
 		this.header = new Header(auth);
 		this.sidebar = new SideBar(auth);
 		this.modal = new ModalLogout();
-		this.switch = new Switch();
 		this.router = new AppRouter(auth);
 		this.onSelect = new EventEmitter('select', this);
 
@@ -33,12 +33,14 @@ export default class AppComponent extends Component
 		this.appendChild(
 			this.router,
 			"app-page"
-		)
+		);
 
 		this.appendChild(
 			this.modal,
 			"modal-logout"
-		)
+		);
+
+		this.onSelect.then(() => this.router.initApp());
 	}
 
 	onFirst() {
@@ -71,6 +73,7 @@ export default class AppComponent extends Component
 		items.push({
 			id: 'menu-exit',
 			icon: "fa fa-sign-out",
+			class: "clickable",
 			title: "Sair"
 		});
 		
@@ -89,6 +92,14 @@ export default class AppComponent extends Component
 
 	headerToggle() {
 		this.sidebar.toggle();
+
+		const interval = setInterval(adjustDataTables, 100);
+		setTimeout(
+			() => {
+				clearInterval(interval);
+			},
+			1000
+		);
 	}
 
 	render() {
@@ -104,7 +115,7 @@ export default class AppComponent extends Component
 				</div>
 			</div>
 
-			<mdal-logout onLogout="this.component.logout()"></modal-logout>
+			<modal-logout onLogout="this.component.logout()"></modal-logout>
 		`;
 	}
 }
