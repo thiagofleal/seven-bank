@@ -14,7 +14,7 @@ export default class AppRouter extends SimpleRouter
 			{ path: "", component: new Home(auth) },
 			{ path: "home", component: new Home(auth) },
 			{ path: "transferir", component: new Transfer(auth) },
-			{ path: "contas", component: new Accounts() },
+			{ path: "contas", component: new Accounts(auth) },
 			{ path: "*", component: new NotFoundComponent() }
 		]);
 	}

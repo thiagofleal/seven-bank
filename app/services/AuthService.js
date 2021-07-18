@@ -24,6 +24,7 @@ export default class AuthService
 		const base = `${ baseUrl }`;
 		const urls = {
 			"login": `${ base }/login`,
+			"agencies": `${ base }/agencias`,
 			"accounts": `${ base }/contas`,
 			"search": `${ base }/contas/buscar`,
 			"pix": `${ base }/pix`

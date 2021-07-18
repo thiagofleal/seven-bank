@@ -10,7 +10,9 @@ export default class AccountService
 
 	async getAccount(id)
 	{
-		id = id || this.auth.getId();
+		if (!id) {
+			id = this.auth.getId();
+		}
 		return await this.request.get(`${ this.auth.getUrl("accounts") }/${ id }`);
 	}
 
@@ -19,9 +21,19 @@ export default class AccountService
 	}
 
 	async transfer(account, value) {
-		value = +value.replace(',', '.');
+		value = parseFloat(value.replace(',', '.'));
 		return await this.request.post(this.auth.getUrl("pix"), {
 			account, value
 		});
+	}
+
+	async listAccounts() {
+		const logged = await this.getAccount();
+
+		if (logged) {
+			return await this.request.get(`${ this.auth.getUrl('agencies') }/${ logged.agency }/contas`);
+		} else {
+			return [];
+		}
 	}
 }

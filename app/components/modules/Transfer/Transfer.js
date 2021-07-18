@@ -151,7 +151,7 @@ export default class Transfer extends FormComponent
 
 				<div class="${ this.searching ? 'd-none' : 'd-block' }">
 					<div class="mb-2">
-						<account-info class="mb-1"></account-info>
+						<account-info></account-info>
 					</div>
 
 					<div class="input-group mb-3">
