@@ -32,10 +32,9 @@ export default class RequestService
 		const ret = await fetch(url, args);
 
 		if (ret.status === 401) {
-			this.logout();
+			this.auth.logout();
 			return false;
 		}
-
 		return ret;
 	}
 
