@@ -1,26 +1,22 @@
 export default class AuthService
 {
-	constructor(callback)
-	{
+	constructor(callback) {
 		this.__id = 0;
 		this.reset();
 		this.callback = callback;
 	}
 
-	reset()
-	{
+	reset() {
 		this.token = null;
 		this.permissions = [];
 	}
 
-	logout()
-	{
+	logout() {
 		this.reset();
 		this.callback();
 	}
 
-	getUrl(key)
-	{
+	getUrl(key) {
 		const base = `${ baseUrl }`;
 		const urls = {
 			"login": `${ base }/login`,
@@ -29,7 +25,8 @@ export default class AuthService
 			"account": `${ base }/conta`,
 			"accounts": `${ base }/contas`,
 			"search": `${ base }/contas/buscar`,
-			"pix": `${ base }/pix`
+			"pix": `${ base }/pix`,
+			"transfers": `${ base }/transferencias`
 		};
 
 		if (key in urls) {
@@ -39,8 +36,7 @@ export default class AuthService
 		return null;
 	}
 
-	async getResult(response)
-	{
+	async getResult(response) {
 		const json = await response.json();
 		
 		if (response.ok) {
@@ -61,8 +57,7 @@ export default class AuthService
 		}
 	}
 
-	async login(username, password)
-	{
+	async login(username, password) {
 		const response = await fetch(
 			this.getUrl("login"),
 			{
@@ -81,23 +76,19 @@ export default class AuthService
 		return await this.getResult(response);
 	}
 
-	isLogged()
-	{
+	isLogged() {
 		return this.token ? true : false;
 	}
 
-	getToken()
-	{
+	getToken() {
 		return this.token;
 	}
 
-	getId()
-	{
+	getId() {
 		return this.__id;
 	}
 
-	savedLogin()
-	{
+	savedLogin() {
 		if (this.isLogged()) {
 			return this.token;
 		}

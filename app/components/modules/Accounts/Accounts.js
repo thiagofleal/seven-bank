@@ -16,6 +16,7 @@ class Table extends TableComponent
 		this.parent = parent;
 		this.service = service;
 
+		this.setOption("scrollY", "20vh");
 		this.setOption("language", {
 			"lengthMenu": "Registros por pagina: _MENU_",
 			"zeroRecords": "Nenhum registro encontrado",
@@ -48,6 +49,13 @@ class Table extends TableComponent
 		} else {
 			alert("Não encontrado");
 		}
+	}
+
+	reload() {
+		super.reload();
+		$(this.__tableSelector).find('.dataTables_filter input').css({
+			width: '70% !important'
+		});
 	}
 
 	render() {
@@ -116,15 +124,15 @@ export default class Accounts extends Component
 			<div class="container-fluid p-3 w-100 h-100">
 				<div class="row">
 					<div class="col">
-						<h5>Gerenciar contas</h5>
+						<h6>Gerenciar contas</h6>
 						<hr>
 						<div>
-							<button class="btn btn-secondary" onclick="this.component.newAccount()">
+							<button class="btn btn-sm btn-secondary" onclick="this.component.newAccount()">
 								<span class="fa fa-user-plus"></span>
 								Nova conta
 							</button>
 
-							<button class="btn btn-secondary float-right" onclick="this.component.loadData()">
+							<button class="btn btn-sm btn-secondary float-right" onclick="this.component.loadData()">
 								<span class="fa fa-refresh"></span>
 							</button>
 						<div>

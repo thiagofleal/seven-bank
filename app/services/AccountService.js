@@ -2,14 +2,12 @@ import RequestService from "./RequestService.js";
 
 export default class AccountService
 {
-	constructor(auth)
-	{
+	constructor(auth) {
 		this.auth = auth;
 		this.request = new RequestService(auth);
 	}
 
-	async getAccount(id)
-	{
+	async getAccount(id) {
 		if (!id) {
 			id = this.auth.getId();
 		}
@@ -27,6 +25,18 @@ export default class AccountService
 		});
 	}
 
+	async transfers() {
+		return await Promise.all(
+			(await this.request.get(this.auth.getUrl("transfers"))).map(async t => {
+				const from = await this.getAccount(t.from);
+				const to = await this.getAccount(t.to);
+				return {
+					from, to, at: t.at, value: t.value
+				};
+			})
+		);
+	}
+
 	async listAccounts() {
 		const logged = await this.getAccount();
 
@@ -42,6 +52,6 @@ export default class AccountService
 	}
 
 	async editAccount(id, owner, password) {
-		return await this.request.post(`${ this.auth.getUrl('accounts') }/${ id }`, { owner, password });
+		return await this.request.put(`${ this.auth.getUrl('accounts') }/${ id }`, { owner, password });
 	}
 }
