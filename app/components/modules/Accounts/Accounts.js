@@ -76,7 +76,7 @@ class Table extends TableComponent
 				}) }
 			</div>
 
-			<div class="${ this.loading ? 'd-block' : 'd-none' }">
+			<div class="${ this.loading ? 'd-block' : 'd-none' } text-center">
 				<img class="img-fluid" src="./images/load.grey.gif" />
 			</div>
 		`;
@@ -88,6 +88,7 @@ export default class Accounts extends Component
 	constructor(auth) {
 		super();
 
+		this.auth = auth;
 		this.service = new AccountService(auth);
 		this.table = new Table(this, this.service);
 		this.modal = new AccountModal(this.service);
@@ -97,6 +98,9 @@ export default class Accounts extends Component
 	}
 
 	onInit() {
+		if (!this.auth.hasPermission('ADM_ACC')) {
+			window.location.hash = '';
+		}
 		this.loadData();
 	}
 

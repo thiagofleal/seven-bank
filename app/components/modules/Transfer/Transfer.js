@@ -38,6 +38,7 @@ export default class Transfer extends FormComponent
 		this.code = '';
 		this.account = {};
 		this.value = '';
+		this.auth = auth;
 		this.service = new AccountService(auth);
 
 		this.button = new EnableButton();
@@ -108,6 +109,12 @@ export default class Transfer extends FormComponent
 				}
 			}
 		});
+	}
+
+	onInit() {
+		if (!this.auth.hasPermission('TRANSF')) {
+			window.location.hash = '';
+		}
 	}
 
 	checkButtonEnable() {
