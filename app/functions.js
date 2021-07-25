@@ -36,5 +36,12 @@ export function formatDateHour(str) {
 }
 
 export function formatMoney(value) {
-	return `G$ ${ parseFloat(value).toFixed(2).replace('.', ',') }`
+	const parts = (+value).toFixed(2).split('.');
+
+	if (parts.length !== 2) {
+		return "!Erro";
+	}
+	
+	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	return `${ parts[0] },${ parts[1] }`;
 }
