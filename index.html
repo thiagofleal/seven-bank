@@ -4,6 +4,9 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="cache-control" content="no-cache">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-title" content="Adicionar à página inicial">
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="./css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css" />
@@ -11,14 +14,18 @@
 		<link rel="stylesheet" type="text/css" href="./font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="./css/fonts.css" />
 		<link rel="stylesheet" type="text/css" href="./css/style.css" />
+		<link rel="stylesheet" type="text/css" href="./css/addtohomescreen.css" />
+		<link rel="manifest" type="text/css" href="./manifest.json">
 		<script src="./js/jquery.min.js"></script>
 		<script src="./js/bootstrap.min.js"></script>
 		<script src="./js/datatables.min.js"></script>
+		<script src="./js/addtohomescreen.min.js"></script>
 		<script type="module" src="./app/main.js"></script>
 	</head>
 	<body>
 		<div id="app" class="w-100 h-100vh"></div>
 		<script type="text/javascript">
+			addToHomescreen();
 			var baseUrl = 'http://localhost/api-seven-bank';
 		</script>
 	</body>
