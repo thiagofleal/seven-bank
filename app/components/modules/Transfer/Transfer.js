@@ -1,32 +1,10 @@
-import { Component, EventEmitter, TextComponent } from "../../../../js/semi-reactive/core.js";
+import { Component, TextComponent } from "../../../../js/semi-reactive/core.js";
 import { FormComponent } from "../../../../js/semi-reactive/utils.js";
+import { formatMoney } from "../../../functions.js";
 
+import EnableButton from "./EnableButton.js";
+import TransferAlert from "./TransferAlert.js";
 import AccountService from "../../../services/AccountService.js";
-
-class EnableButton extends Component
-{
-	constructor() {
-		super({
-			enabled: true,
-			text: '',
-			class: ''
-		});
-	}
-
-	onFirst(item) {
-		const onClick = new EventEmitter('click', item);
-		const callback = this.getFunctionAttribute('onclick', item, 'event');
-		onClick.then(event => callback(event));
-	}
-
-	render() {
-		return `
-			<button class="${ this.class }" ${ this.enabled ? '' : 'disabled="disabled"' }>
-				${ this.text }
-			</button>
-		`;
-	}
-}
 
 export default class Transfer extends FormComponent
 {
@@ -37,7 +15,7 @@ export default class Transfer extends FormComponent
 
 		this.code = '';
 		this.account = {};
-		this.value = '';
+		this.value = '0,00';
 		this.auth = auth;
 		this.service = new AccountService(auth);
 
@@ -45,11 +23,13 @@ export default class Transfer extends FormComponent
 		this.button.class = "btn btn-secondary btn-block";
 		this.button.text = "Transferir";
 		this.accountInfo = new TextComponent('');
+		this.alert = new TransferAlert();
 
 		this.checkButtonEnable();
 
 		this.appendChild(this.button, 'btn-custom');
 		this.appendChild(this.accountInfo, 'account-info');
+		this.appendChild(this.alert, 'transfer-alert');
 
 		this.setFieldsControls({
 			account: {
@@ -103,31 +83,33 @@ export default class Transfer extends FormComponent
 					if (value.length == 2) {
 						value = '0' + value;
 					}
-					value = value.substr(0, value.length - 2) + ',' + value.substr(value.length - 2, 2);
-					this.value = value;
+					value = value.substr(0, value.length - 2) + '.' + value.substr(value.length - 2, 2);
+					this.value = formatMoney(value);
 					this.checkButtonEnable();
 				}
 			}
 		});
 	}
 
-	onInit() {
+	onSelected() {
 		if (!this.auth.hasPermission('TRANSF')) {
 			window.location.hash = '';
 		}
 	}
 
 	checkButtonEnable() {
-		this.button.enabled = this.account.id !== undefined && parseFloat(this.value.replace(',', '.'));
+		this.button.setEnabled(this.account.id !== undefined && parseFloat(this.value.replace(',', '.')));
 	}
 
 	async transfer() {
 		const ret = await this.service.transfer(this.account.id, this.value);
 
 		if (ret.error !== undefined) {
-			alert(ret.error);
+			this.alert.showFail(ret.error);
 		} else {
-			alert("Transferência realizada com sucesso");
+			this.alert.showSuccess("Transferência realizada com sucesso");
+			document.getElementById('transfer-account').value = '';
+			document.getElementById('transfer-value').value = '0,00';
 		}
 	}
 
@@ -180,6 +162,8 @@ export default class Transfer extends FormComponent
 					<btn-custom onclick="this.component.transfer()"></btn-custom>
 				</div>
 			</div>
+
+			<transfer-alert data-classes="modal-dialog-centered"></transfer-alert>
 		`;
 	}
 }

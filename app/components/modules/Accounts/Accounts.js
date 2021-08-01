@@ -1,87 +1,9 @@
 import { Component } from "../../../../js/semi-reactive/core.js";
-import { TableComponent } from "../../../../js/semi-reactive/utils.js";
 import { adjustDataTables } from "../../../../app/functions.js";
 
+import Table from "./Table.js";
 import AccountModal from "./AccountModal.js";
 import AccountService from "../../../services/AccountService.js";
-
-class Table extends TableComponent
-{
-	constructor(parent, service) {
-		super("#table-accounts", {
-			data: [],
-			loading: false
-		});
-
-		this.parent = parent;
-		this.service = service;
-
-		this.setOption("scrollY", "20vh");
-		this.setOption("language", {
-			"lengthMenu": "Registros por pagina: _MENU_",
-			"zeroRecords": "Nenhum registro encontrado",
-			"info": "Pagina _PAGE_ de _PAGES_",
-			"infoEmpty": "Não há registros disponíveis",
-			"infoFiltered": "(_TOTAL_ resultados encontrados)",
-			"search": "Procurar: ",
-			"loadingRecords": "Carregando...",
-			"processing": "Processando...",
-			"paginate": {
-				"first": "Primeiro",
-				"last": "Último",
-				"next": "Próximo",
-				"previous": "Anterior"
-			}
-		});
-	}
-
-	async loadData() {
-		this.loading = true;
-		this.data = await this.service.listAccounts();
-		this.loading = false;
-	}
-
-	open(id) {
-		const row = this.data.find(r => r.id == id);
-
-		if (row) {
-			this.parent.openAccount(row);
-		} else {
-			alert("Não encontrado");
-		}
-	}
-
-	reload() {
-		super.reload();
-		$(this.__tableSelector).find('.dataTables_filter input').css({
-			width: '70% !important'
-		});
-	}
-
-	render() {
-		return `
-			<div class="${ this.loading ? 'd-none' : 'd-block' }">
-				${ this.create({
-					id: "table-accounts",
-					header: [
-						"Conta", "Titular"
-					],
-					data: this.data,
-					fields: {
-						code: v => v || "",
-						owner: v => v || ""
-					},
-					tr_classes: 'clickable',
-					tr: row => `onclick="this.component.open(${ row.id })"`
-				}) }
-			</div>
-
-			<div class="${ this.loading ? 'd-block' : 'd-none' } text-center">
-				<img class="img-fluid" src="./images/load.grey.gif" />
-			</div>
-		`;
-	}
-}
 
 export default class Accounts extends Component
 {
@@ -97,7 +19,7 @@ export default class Accounts extends Component
 		this.appendChild(this.modal, "modal-accounts");
 	}
 
-	onInit() {
+	onSelected() {
 		if (!this.auth.hasPermission('ADM_ACC')) {
 			window.location.hash = '';
 		}

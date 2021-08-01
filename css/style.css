@@ -22,6 +22,12 @@ nav.navbar {
 	}
 }
 
+@media (max-width: 768px) {
+	.dataTables_filter input {
+		width: 65% !important;
+	}
+}
+
 .clickable {
 	cursor: pointer;
 }

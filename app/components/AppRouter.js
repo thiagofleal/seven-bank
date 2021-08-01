@@ -10,20 +10,14 @@ export default class AppRouter extends SimpleRouter
 	constructor(auth) {
 		super();
 
+		const home = new Home(auth);
+
 		this.setRoutes([
-			{ path: "", component: new Home(auth) },
-			{ path: "home", component: new Home(auth) },
+			{ path: "", component: home },
+			{ path: "home", component: home },
 			{ path: "transferir", component: new Transfer(auth) },
 			{ path: "contas", component: new Accounts(auth) },
 			{ path: "*", component: new NotFoundComponent() }
 		]);
-	}
-
-	initApp() {
-		this.getAllComponents().forEach(c => {
-			if (c.onInit) {
-				c.onInit();
-			}
-		});
 	}
 }

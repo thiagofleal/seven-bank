@@ -19,22 +19,27 @@ export default class AccountService
 	}
 
 	async transfer(account, value) {
-		value = parseFloat(value.replace(',', '.'));
+		value = parseFloat(value.replace('.', '').replace(',', '.'));
 		return await this.request.post(this.auth.getUrl("pix"), {
 			account, value
 		});
 	}
 
 	async transfers() {
-		return await Promise.all(
-			(await this.request.get(this.auth.getUrl("transfers"))).map(async t => {
-				const from = await this.getAccount(t.from);
-				const to = await this.getAccount(t.to);
-				return {
-					from, to, at: t.at, value: t.value
-				};
-			})
-		);
+		const transfers = await this.request.get(this.auth.getUrl("transfers"));
+		
+		if (Array.isArray(transfers)) {
+			return await Promise.all(
+				transfers.map(async t => {
+					const from = await this.getAccount(t.from);
+					const to = await this.getAccount(t.to);
+					return {
+						from, to, at: t.at, value: t.value
+					};
+				})
+			);
+		}
+		return [];
 	}
 
 	async listAccounts() {

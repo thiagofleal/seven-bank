@@ -18,7 +18,7 @@ export default class Home extends Component
 		this.service = new AccountService(auth);
 	}
 
-	onInit() {
+	onSelected() {
 		if (!this.auth.hasPermission('ACC')) {
 			window.location.hash = '';
 		}

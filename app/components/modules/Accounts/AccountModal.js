@@ -149,7 +149,7 @@ class ModalContent extends FormComponent
 		}
 
 		return `
-			<div class="modal-header">
+			<div class="modal-header h-4">
 				${ this.title }
 			</div>
 

@@ -39,11 +39,9 @@ export default class AppComponent extends Component
 			this.modal,
 			"modal-logout"
 		);
-
-		this.onSelect.then(() => this.router.initApp());
 	}
 
-	onFirst() {
+	onSelected() {
 		const items = [];
 
 		if (this.auth.hasPermission('ACC')) {
@@ -78,6 +76,7 @@ export default class AppComponent extends Component
 		});
 		
 		this.sidebar.menu = items;
+		this.sidebar.onInit();
 	}
 
 	selectMenuItem(event) {

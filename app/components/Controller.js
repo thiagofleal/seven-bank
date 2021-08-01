@@ -1,7 +1,7 @@
 import { Switch } from "./../../js/semi-reactive/core.js";
 
 import AppComponent from "./AppComponent.js";
-import Login from "./Login.js";
+import Login from "./Login/Login.js";
 import Loading from "./Loading.js";
 
 import AuthService from "./../services/AuthService.js";
