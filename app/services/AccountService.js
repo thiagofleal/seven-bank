@@ -59,4 +59,14 @@ export default class AccountService
 	async editAccount(id, owner, password) {
 		return await this.request.put(`${ this.auth.getUrl('accounts') }/${ id }`, { owner, password });
 	}
+
+	async changePassword(oldPassword, newPassword) {
+		const logged = await this.getAccount();
+
+		return await this.request.put(this.auth.getUrl('setPassword'), {
+			account: logged.code,
+			password: oldPassword,
+			newPassword
+		})
+	}
 }
