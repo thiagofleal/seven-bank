@@ -1,5 +1,5 @@
-import { EventEmitter } from "../../../js/semi-reactive/core.js";
-import { FormComponent } from "../../../js/semi-reactive/utils.js";
+const { EventEmitter } = await SemiReactive.import("core.js");
+const { FormComponent } = await SemiReactive.import("utils.js");
 
 import LoginAlert from "./LoginAlert.js";
 

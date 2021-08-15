@@ -1,4 +1,4 @@
-import { SimpleRouter } from "../../js/semi-reactive/core.js";
+const { SimpleRouter } = await SemiReactive.import("core.js");
 
 import NotFoundComponent from "./modules/Default/NotFoundComponent.js";
 import Home from "./modules/Home/Home.js";

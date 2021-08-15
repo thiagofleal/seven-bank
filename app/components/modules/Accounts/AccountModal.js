@@ -1,4 +1,4 @@
-import { ModalComponent, FormComponent } from "../../../../js/semi-reactive/utils.js";
+const { ModalComponent, FormComponent } = await SemiReactive.import("utils.js");
 
 class ModalContent extends FormComponent
 {

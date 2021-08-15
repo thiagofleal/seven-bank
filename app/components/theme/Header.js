@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from "../../../js/semi-reactive/core.js";
+const { Component, EventEmitter } = await SemiReactive.import("core.js");
 
 import ModalLogout from "./ModalLogout.js";
 

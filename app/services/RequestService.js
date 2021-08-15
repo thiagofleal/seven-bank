@@ -1,4 +1,4 @@
-import { Request } from "../../js/semi-reactive/request.js";
+const { Request } = await SemiReactive.import("request.js");
 
 export default class RequestService extends Request
 {

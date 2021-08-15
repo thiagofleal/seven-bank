@@ -1,4 +1,4 @@
-import { Switch } from "./../../js/semi-reactive/core.js";
+const { Switch } = await SemiReactive.import("core.js");
 
 import AppComponent from "./AppComponent.js";
 import Login from "./Login/Login.js";

@@ -1,5 +1,5 @@
-import { Component, EventEmitter } from "../../../js/semi-reactive/core.js";
-import { ModalComponent } from "../../../js/semi-reactive/utils.js";
+const { Component, EventEmitter } = await SemiReactive.import("core.js");
+const { ModalComponent } = await SemiReactive.import("utils.js");
 
 class ModalContent extends Component
 {

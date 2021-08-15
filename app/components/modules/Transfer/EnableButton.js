@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from "../../../../js/semi-reactive/core.js";
+const { Component, EventEmitter } = await SemiReactive.import("core.js");
 
 export default class EnableButton extends Component
 {

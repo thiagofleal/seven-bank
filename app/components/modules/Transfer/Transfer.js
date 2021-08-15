@@ -1,5 +1,5 @@
-import { Component, TextComponent } from "../../../../js/semi-reactive/core.js";
-import { FormComponent } from "../../../../js/semi-reactive/utils.js";
+const { Component, TextComponent } = await SemiReactive.import("core.js");
+const { FormComponent } = await SemiReactive.import("utils.js");
 import { formatMoney } from "../../../functions.js";
 
 import EnableButton from "./EnableButton.js";

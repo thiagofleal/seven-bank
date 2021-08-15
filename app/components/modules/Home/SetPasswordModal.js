@@ -1,4 +1,4 @@
-import { FormComponent, ModalComponent } from "../../../../js/semi-reactive/utils.js";
+const { FormComponent, ModalComponent } = await SemiReactive.import("utils.js");
 
 import SetPasswordAlert from "./SetPasswordAlert.js";
 

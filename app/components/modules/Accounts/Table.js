@@ -1,4 +1,4 @@
-import { TableComponent } from "../../../../js/semi-reactive/utils.js";
+const { TableComponent } = await SemiReactive.import("utils.js");
 
 export default class Table extends TableComponent
 {

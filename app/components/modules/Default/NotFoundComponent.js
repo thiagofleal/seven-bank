@@ -1,4 +1,4 @@
-import { Component } from "../../../../js/semi-reactive/core.js";
+const { Component } = await SemiReactive.import("core.js");
 
 export default class NotFoundComponent extends Component
 {

@@ -11,6 +11,5 @@ window.onresize = function (event) {
 	adjustDataTables();
 };
 
-document.body.onload = function() {
-	(new Controller()).show('#app');
-};
+
+export default Controller;
