@@ -1,10 +1,11 @@
-import { Switch } from "./../../js/semi-reactive/core.js";
+const { Switch } = await SemiReactive.import("core.js");
 
 import AppComponent from "./AppComponent.js";
-import Login from "./Login.js";
+import Login from "./Login/Login.js";
 import Loading from "./Loading.js";
 
 import AuthService from "./../services/AuthService.js";
+import RequestService from "./../services/RequestService.js";
 
 export default class Controller extends Switch
 {

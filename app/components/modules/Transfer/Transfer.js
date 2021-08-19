@@ -1,5 +1,9 @@
-import { FormComponent } from "../../../../js/semi-reactive/utils.js";
+const { Component, TextComponent } = await SemiReactive.import("core.js");
+const { FormComponent } = await SemiReactive.import("utils.js");
+import { formatMoney } from "../../../functions.js";
 
+import EnableButton from "./EnableButton.js";
+import TransferAlert from "./TransferAlert.js";
 import AccountService from "../../../services/AccountService.js";
 
 export default class Transfer extends FormComponent
@@ -12,7 +16,20 @@ export default class Transfer extends FormComponent
 		this.code = '';
 		this.account = {};
 		this.value = '0,00';
+		this.auth = auth;
 		this.service = new AccountService(auth);
+
+		this.button = new EnableButton();
+		this.button.class = "btn btn-secondary btn-block";
+		this.button.text = "Transferir";
+		this.accountInfo = new TextComponent('');
+		this.alert = new TransferAlert();
+
+		this.checkButtonEnable();
+
+		this.appendChild(this.button, 'btn-custom');
+		this.appendChild(this.accountInfo, 'account-info');
+		this.appendChild(this.alert, 'transfer-alert');
 
 		this.setFieldsControls({
 			account: {
@@ -24,12 +41,28 @@ export default class Transfer extends FormComponent
 						account = account.substr(0, 6) + '-' + account.substr(6, 1);
 					}
 					this.code = account;
+					this.accountInfo.setText("");
 
 					if (account.length == 8) {
+						this.showInfo = true;
 						this.searching = true;
 						this.account = await this.service.search(this.code);
+
+						if (this.account.owner) {
+							this.accountInfo.setText(`
+								<h6>Nome: ${ this.account.owner }</h6>
+								<h6>Agência: ${ this.account.agency }</h6>
+								<h6>Conta: ${ this.account.account }</h6>
+							`);
+						} else {
+							this.accountInfo.setText(`Conta não encontrada`);
+						}
 						this.searching = false;
+					} else {
+						this.account = {};
+						this.accountInfo.setText('');
 					}
+					this.checkButtonEnable();
 				}
 			},
 			value: {
@@ -50,30 +83,39 @@ export default class Transfer extends FormComponent
 					if (value.length == 2) {
 						value = '0' + value;
 					}
-					value = value.substr(0, value.length - 2) + ',' + value.substr(value.length - 2, 2);
-					this.value = value;
+					value = value.substr(0, value.length - 2) + '.' + value.substr(value.length - 2, 2);
+					this.value = formatMoney(value);
+					this.checkButtonEnable();
 				}
 			}
 		});
 	}
 
-	btnEnabled() {
-		return this.account.id !== undefined;
+	onSelected() {
+		if (!this.auth.hasPermission('TRANSF')) {
+			window.location.hash = '';
+		}
+	}
+
+	checkButtonEnable() {
+		this.button.setEnabled(this.account.id !== undefined && parseFloat(this.value.replace(',', '.')));
 	}
 
 	async transfer() {
 		const ret = await this.service.transfer(this.account.id, this.value);
 
 		if (ret.error !== undefined) {
-			alert(ret.error);
+			this.alert.showFail(ret.error);
 		} else {
-			alert("Transferência realizada com sucesso");
+			this.alert.showSuccess("Transferência realizada com sucesso");
+			document.getElementById('transfer-account').value = '';
+			document.getElementById('transfer-value').value = '0,00';
 		}
 	}
 
 	render() {
 		return `
-			<div class="p-5 h-100 text-center">
+			<div class="p-5 h-100">
 				<h4>Transferir</h4>
 				<hr>
 				<div class="input-group mb-3">
@@ -97,10 +139,8 @@ export default class Transfer extends FormComponent
 				</div>
 
 				<div class="${ this.searching ? 'd-none' : 'd-block' }">
-					<div class="${ this.account.owner ? 'd-block' : 'd-none' }">
-						<h6>Nome: ${ this.account.owner }</h6>
-						<h6>Agência: ${ this.account.agency }</h6>
-						<h6>Conta: ${ this.account.account }</h6>
+					<div class="mb-2">
+						<account-info></account-info>
 					</div>
 
 					<div class="input-group mb-3">
@@ -119,11 +159,11 @@ export default class Transfer extends FormComponent
 						}
 					</div>
 
-					<button class="btn btn-secondary btn-block" ${ this.btnEnabled() ? '' : 'disabled="disabled"' } onclick="this.component.transfer()">
-						Transferir
-					</button>
+					<btn-custom onclick="this.component.transfer()"></btn-custom>
 				</div>
 			</div>
+
+			<transfer-alert data-classes="modal-dialog-centered"></transfer-alert>
 		`;
 	}
 }

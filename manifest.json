@@ -1,0 +1,16 @@
+{
+    "short_name": "Seven Bank",
+    "name": "Seven Bank",
+    "icons": [
+        {
+            "src": "/seven-bank/images/logo-ja.png",
+            "type": "image/png",
+            "sizes": "500x500"
+        }
+    ],
+    "start_url": "/seven-bank/index.html",
+    "background_color": "#fecc0d",
+    "display": "fullscreen",
+    "scope": "/seven-bank",
+    "theme_color": "#1276bb"
+}

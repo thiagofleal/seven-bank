@@ -1,4 +1,4 @@
-import { SimpleRouter } from "../../js/semi-reactive/core.js";
+const { SimpleRouter } = await SemiReactive.import("core.js");
 
 import NotFoundComponent from "./modules/Default/NotFoundComponent.js";
 import Home from "./modules/Home/Home.js";
@@ -10,11 +10,13 @@ export default class AppRouter extends SimpleRouter
 	constructor(auth) {
 		super();
 
+		const home = new Home(auth);
+
 		this.setRoutes([
-			{ path: "", component: new Home(auth) },
-			{ path: "home", component: new Home(auth) },
+			{ path: "", component: home },
+			{ path: "home", component: home },
 			{ path: "transferir", component: new Transfer(auth) },
-			{ path: "contas", component: new Accounts() },
+			{ path: "contas", component: new Accounts(auth) },
 			{ path: "*", component: new NotFoundComponent() }
 		]);
 	}

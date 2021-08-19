@@ -1,11 +1,15 @@
 import Controller from './components/Controller.js';
+import { adjustDataTables } from './functions.js';
 
 document.body.onkeydown = function (event) {
 	if (event.keyCode === 116) {
 		return false;
 	}
-}
+};
 
-document.body.onload = function() {
-	(new Controller()).show('#app');
-}
+window.onresize = function (event) {
+	adjustDataTables();
+};
+
+
+export default Controller;

@@ -1,4 +1,5 @@
-import { Component, Switch, EventEmitter } from "../../js/semi-reactive/core.js";
+const { Component, EventEmitter } = await SemiReactive.import("core.js");
+import { adjustDataTables } from '../functions.js';
 
 import Header from "./theme/Header.js";
 import SideBar from "./theme/SideBar.js";
@@ -16,7 +17,6 @@ export default class AppComponent extends Component
 		this.header = new Header(auth);
 		this.sidebar = new SideBar(auth);
 		this.modal = new ModalLogout();
-		this.switch = new Switch();
 		this.router = new AppRouter(auth);
 		this.onSelect = new EventEmitter('select', this);
 
@@ -33,15 +33,15 @@ export default class AppComponent extends Component
 		this.appendChild(
 			this.router,
 			"app-page"
-		)
+		);
 
 		this.appendChild(
 			this.modal,
 			"modal-logout"
-		)
+		);
 	}
 
-	onFirst() {
+	onSelected() {
 		const items = [];
 
 		if (this.auth.hasPermission('ACC')) {
@@ -62,8 +62,8 @@ export default class AppComponent extends Component
 		}
 		if (this.auth.hasPermission('ADM_ACC')) {
 			items.push({
-				id: 'menu-manage-accounts',
-				icon: "fa fa-address-card-o",
+				id: 'menu-manage',
+				icon: "fa fa-users",
 				title: "Contas",
 				href: "#/contas"
 			});
@@ -71,10 +71,12 @@ export default class AppComponent extends Component
 		items.push({
 			id: 'menu-exit',
 			icon: "fa fa-sign-out",
+			class: "clickable",
 			title: "Sair"
 		});
 		
 		this.sidebar.menu = items;
+		this.sidebar.onInit();
 	}
 
 	selectMenuItem(event) {
@@ -89,6 +91,14 @@ export default class AppComponent extends Component
 
 	headerToggle() {
 		this.sidebar.toggle();
+
+		const interval = setInterval(adjustDataTables, 100);
+		setTimeout(
+			() => {
+				clearInterval(interval);
+			},
+			1000
+		);
 	}
 
 	render() {
@@ -104,7 +114,7 @@ export default class AppComponent extends Component
 				</div>
 			</div>
 
-			<mdal-logout onLogout="this.component.logout()"></modal-logout>
+			<modal-logout onLogout="this.component.logout()"></modal-logout>
 		`;
 	}
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from "../../../js/semi-reactive/core.js";
+const { Component, EventEmitter } = await SemiReactive.import("core.js");
 
 import AccountService from "../../services/AccountService.js";
 
@@ -19,11 +19,14 @@ export default class SideBar extends Component
 		this.service = new AccountService(auth);
 	}
 
-	async onFirst(item) {
+	onFirst(item) {
 		const onSelect = this.getFunctionAttribute("onselect", item, "event");
+		this.onSelect.then(onSelect);
+	}
+
+	async onInit() {
 		const json = await this.service.getAccount();
 		
-		this.onSelect.then(onSelect);
 		this.owner = json.owner;
 		this.agency = json.agency;
 		this.account = json.code;
@@ -72,14 +75,12 @@ export default class SideBar extends Component
 			delete menu.childs;
 			delete menu.ul;
 		}
-		
 		for (let key in menu) {
 			attributes.push({
 				name: key,
 				value: menu[key]
 			});
 		}
-
 		const link = `
 			<a ${
 				attributes.map(
@@ -135,7 +136,7 @@ export default class SideBar extends Component
 	render() {
 		return `
 			<nav id="sidebar" class="${ this.active ? "active" : '' } bg-custom">
-				<div class="sidebar-header text-light" style="height: calc(40vh - 125px)">
+				<div class="sidebar-header text-light" style="height: 100px">
 					<div class="p-2">
 						<div>
 							Titular: ${ this.owner }
@@ -150,7 +151,7 @@ export default class SideBar extends Component
 				</div>
 				<hr class="bg-light">
 
-				<ul class="list-unstyled components text-light" style="height: 55vh; overflow: auto;">
+				<ul class="list-unstyled components text-light" style="height: calc(95vh - 225px); overflow: auto;">
 					${
 						this.menu.map(
 							(item, index) => `
