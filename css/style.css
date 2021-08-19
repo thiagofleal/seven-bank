@@ -138,6 +138,11 @@ ul ul a {
 	cursor: pointer;
 }
 
+.bg-alpha-5 {
+	opacity: .5;
+	background-color: rgba(0, 0, 0, .5);
+}
+
 ::-webkit-scrollbar {
 	width: 5px;
 }

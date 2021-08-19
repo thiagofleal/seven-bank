@@ -67,6 +67,14 @@ export default class AccountService
 			account: logged.code,
 			password: oldPassword,
 			newPassword
-		})
+		});
+	}
+
+	async addAdmin(account) {
+		return await this.request.post(this.auth.getUrl('admin'), { account });
+	}
+
+	async removeAdmin(account) {
+		return await this.request.delete(this.auth.getUrl('admin'), { account });
 	}
 }

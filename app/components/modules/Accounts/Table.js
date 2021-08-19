@@ -11,7 +11,6 @@ export default class Table extends TableComponent
 		this.parent = parent;
 		this.service = service;
 
-		this.setOption("scrollY", "20vh");
 		this.setOption("language", {
 			"lengthMenu": "Registros por pagina: _MENU_",
 			"zeroRecords": "Nenhum registro encontrado",
@@ -56,6 +55,7 @@ export default class Table extends TableComponent
 
 	render() {
 		const width = $(window).width();
+		this.setOption("scrollY", ($(window).height() - 425) + "px");
 
 		return `
 			<div class="${ this.loading ? 'd-none' : 'd-block' }">
@@ -78,6 +78,8 @@ export default class Table extends TableComponent
 							{ width: "10%", visible: width > 425 },
 							{ width: "10%", visible: width > 425 }
 						],
+						classes: "table-sm table-striped table-hover table-info bg-light",
+						thead_classes: "bg-info text-light",
 						tr_classes: 'clickable',
 						tr: row => `onclick="this.component.open(${ row.id })"`
 					}) }

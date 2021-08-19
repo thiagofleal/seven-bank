@@ -27,7 +27,8 @@ export default class AuthService
 			"search": `${ base }/contas/buscar`,
 			"pix": `${ base }/pix`,
 			"transfers": `${ base }/transferencias`,
-			"setPassword": `${ base }/alterar-senha`
+			"setPassword": `${ base }/alterar-senha`,
+			"admin": `${ base }/administradores`
 		};
 
 		if (key in urls) {

@@ -51,12 +51,12 @@ export default class Home extends Component
 			<div class="container-fluid p-3" style="height: calc(100vh - 125px)">
 				<div class="row mb-2 ${ this.loading ? 'd-none' : 'd-block' }" style="100px">
 					<div class="col">
-						<button class="btn btn-light" onclick="this.component.setPassword()">
+						<button class="btn btn-info" onclick="this.component.setPassword()">
 							<span class="fa fa-key"></span>
 							Alterar senha
 						</button>
 
-						<button class="btn btn-light float-right" onclick="this.component.loadData()">
+						<button class="btn btn-info float-right" onclick="this.component.loadData()">
 							<span class="fa fa-refresh"></span>
 						</button>
 					</div>
@@ -85,7 +85,7 @@ export default class Home extends Component
 
 				<div class="row ${ this.loading ? 'd-none' : 'd-block' }" style="height: 30vh">
 					<div class="col">
-						<div class="card text-center">
+						<div class="card text-center card-info">
 							<div class="card-header">
 								<h6>Transferências</h6>
 							</div>

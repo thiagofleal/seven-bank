@@ -53,7 +53,7 @@ class ModalContent extends FormComponent
 				})
 			}
 		} else {
-			alert("A senha e a confirmação não conferem");
+			this.alert.showFail("A senha e a confirmação não conferem");
 		}
 	}
 

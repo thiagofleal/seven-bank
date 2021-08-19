@@ -35,7 +35,7 @@ export default class Header extends Component
 
 	render() {
 		return `
-			<nav class="navbar navbar-light bg-light fixed-top shadow-bottom">
+			<nav class="navbar navbar-dark bg-info text-light fixed-top shadow-bottom">
 				<div class="container-fluid">
 					<a class="navbar-brand">
 						<button class="btn" onClick="this.component.toggleSidebar()">

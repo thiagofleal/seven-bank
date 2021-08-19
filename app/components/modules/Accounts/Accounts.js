@@ -53,12 +53,12 @@ export default class Accounts extends Component
 						<h6>Gerenciar contas</h6>
 						<hr>
 						<div>
-							<button class="btn btn-sm btn-secondary" onclick="this.component.newAccount()">
+							<button class="btn btn-sm btn-info" onclick="this.component.newAccount()">
 								<span class="fa fa-user-plus"></span>
 								Nova conta
 							</button>
 
-							<button class="btn btn-sm btn-secondary float-right" onclick="this.component.loadData()">
+							<button class="btn btn-sm btn-info float-right" onclick="this.component.loadData()">
 								<span class="fa fa-refresh"></span>
 							</button>
 						<div>
